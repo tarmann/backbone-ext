@@ -1,10 +1,12 @@
-var BaseView = {
+// BBExt
+
+BBExt.AppView = BBExt.LayoutView.extend({
 
   // Default viewData 
   _viewData: {},
 
-  // Store all nested resources (models, collections)
-  _resources: {},
+  // Store all nested entities (models, collections)
+  _entities: {},
 
   // Store all nested views 
   _childViews: {},
@@ -23,7 +25,7 @@ var BaseView = {
       viewData = _.extend(viewData, options);
     }
 
-    // TODO: include all resources available
+    // TODO: include all entities available
 
     return viewData;
   },
@@ -65,6 +67,10 @@ var BaseView = {
   _afterRender: function(options){
     return this;
   },  
+
+  bindEntity: function(model_or_collection){
+    this._entities.push(model_or_collection);
+  },
 
   // Parse content of input fields into a object that will be used
   // as a hash to be saved on the model binded to the view.
