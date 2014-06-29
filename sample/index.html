@@ -16,47 +16,7 @@
 
 <script type="text/javascript" src="../src/routers/AppRouter.js"></script>
 <script type="text/javascript" src="../src/views/AppView.js"></script>
-
-<script>
-  
-var SD = { App : {}, Routers : {} };
-
-SD.App.Router = BBExt.AppRouter.extend({
-
-  appRoutes: [
-    
-    // Base Routers
-    {  prefix: 'mail', filter: 'mailFilter', routes: {
-      ''                        : 'mail',
-      'mail'                    : 'mail',
-      'mail/:mail'              : 'contacts' 
-    }},
-
-    // Settings Routers
-    { prefix: 'settings', filter: 'settingsFilter', routes: {
-      '/personal'               : 'settingsPersonal',
-      '/personal/password'      : 'settingsPersonalPassword'
-    }}  
-  
-  ],
-
-  mailFilter: function(){
-    console.log('load mail collection');
-  },
-
-  mail: function(){
-    console.log('load mail view');
-  }
-
-});
-
-SD.App = new BBExt.AppView({
-  
-  router: SD.App.Router
-
-});
-
-</script>
+<script type="text/javascript" src="src/app.js"></script>
 
 </body>
 </html>
