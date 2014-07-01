@@ -12,7 +12,7 @@ BBExt.ItemView = Backbone.View.extend({
   _entities: {},
 
   // Store all nested views 
-  _childViews: {},
+  _childViews: [],
 
   // Get viewData object to be used to render view. The view data includes
   // the current model binded to the view, model resources attached to the view
@@ -46,11 +46,11 @@ BBExt.ItemView = Backbone.View.extend({
 
     if(options.silent) this.trigger('render:before', options);
 
-    this._beforeRender(options);
+    // this._beforeRender(options);
 
     this.$el.html( this.template( this.getViewData(options.viewData) ));
 
-    this._afterRender(options);
+    // this._afterRender(options);
 
     if(options.silent) this.trigger('render', options);
     if(options.silent) this.trigger('render:after', options);
@@ -76,20 +76,30 @@ BBExt.ItemView = Backbone.View.extend({
   },
 
   // bind entities from this.entities
-  bindEntities: function(){
+  _bindEntities: function(){
   	_.each(this.entities, function(entity, name){
-      this.bindEntity(name, entity);
+      this._bindEntity(name, entity);
   	}, this);
   },
 
-  bindEntity: function(name, model_or_collection){
+  _bindEntity: function(name, model_or_collection){
     this._entities[name] = new model_or_collection();
     return this;
   },
 
+  bindView: function(view, id){
+  	this._childViews.push({
+      cid 	: view.cid,
+      name	: id || view.cid,
+      view 	: view
+  	});
+
+  	return this;
+  },
+
+  // TODO: move to form mixin
   // Parse content of input fields into a object that will be used
   // as a hash to be saved on the model binded to the view.
-  // TODO: move to form mixin
   parseForm: function(){
     // TODO: parseForm
     return this.afterParseForm(formData);

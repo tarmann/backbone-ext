@@ -1,24 +1,51 @@
-var CollectionView = {
+var BBExt = BBExt || {};
 
-  render: function(options){
-    _.each(this.collection, function(model){
-      this.renderItemView(model);
+BBExt.CollectionView = BBExt.ItemView.extend({
+
+  initialize: function(){
+    this._bindChildViews();
+  },
+
+  // Create a sub view for every model in the collection
+  _bindChildViews: function(){
+    var viewData  = _.extend({}, this.options.itemViewOptions),
+        ItemView  = this.options.itemView;
+
+    this.collection.each(function(model) {
+      var view = new ItemView(_.extend({}, { model: model }, viewData));
+      this.bindView( view );
+    }, this);
+  },
+
+  // Render collection view, if empty render emptyView
+  render: function(){
+    if(this.collection.length === 0){
+      this.renderEmptyView();
+      this.trigger('render:empty', this);
+    } else {
+      this.renderCollectionView();
+      this.trigger('render', this);
+    }
+  },
+
+  // Render each subview, appending to our root element
+  renderCollectionView: function(){
+    var container = document.createDocumentFragment();
+
+    this.getCollectionEl().empty();
+
+    _.each(this._childViews, function(childView) {
+      container.appendChild(childView.view.render().el);
     }, this);
 
-    return this;
-  },
-
-  renderItemView: function(model, options){
-    var viewData  = _.extend({}, { model: model }, this.options.itemViewOptions),
-        view      = new this.options.itemView(viewData);
-
-    this.$el.append( view.render().el );
+    this.getCollectionEl().append( this.container );
 
     return this;
   },
 
+  // Render empty view
 	renderEmptyView: function(options){
-    if(! this.options.emptyView) return this;
+    if(! this.getEmptyView() ) return this;
 
     this.emptyView = new this.getEmptyView(options);
 
@@ -27,13 +54,14 @@ var CollectionView = {
     return this;
 	},
 
-  getEmptyView: function(){
-    return this.options.emptyView;
+  // Return collection element if defined, otherwise return this.$el
+  getCollectionEl: function(){
+    return this.$el;
   },
 
-  clearEl: function(){
-    this.$el.html('');
-    return this;
+  // Return emptyView if defined, otherwise return null
+  getEmptyView: function(){
+    return this.options.emptyView || null;
   }
 
-};
+});
