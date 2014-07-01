@@ -5,8 +5,17 @@ var SD = {
   App           : {}
 };
 
-SD.Models.User = Backbone.Model.extend({});
-SD.Collections.User = Backbone.Model.extend({});
+SD.Models.Mail = Backbone.Model.extend({
+});
+
+SD.Models.User = Backbone.Model.extend({
+});
+
+SD.Collections.User = Backbone.Model.extend({
+});
+
+SD.Collections.Mail = Backbone.Model.extend({
+});
 
 SD.App.Router = BBExt.AppRouter.extend({
 
@@ -14,7 +23,8 @@ SD.App.Router = BBExt.AppRouter.extend({
     // Base Routers
     {  prefix: 'mail', filter: 'mailFilter', routes: {
       ''                        : 'mails',
-      '/:mail'                  : 'mail'
+      '/:mail'                  : 'mail',
+      '/:mail/respond'          : 'mailResponsd'
     }},
     // Settings Routers
     { prefix: 'settings', filter: 'settingsFilter', routes: {
@@ -24,16 +34,16 @@ SD.App.Router = BBExt.AppRouter.extend({
   ],
 
   mailFilter: function(fn, args){
-    console.log('filter', args);
+    console.log('mailFilter', this.appView);
     fn.apply(this, args);
   },
 
   mail: function(id){
-    console.log('load mail view', id);
+    console.log('mail', id);
   },
 
   mails: function(id){
-    console.log('load mails view');
+    console.log('mails');
   },
 
   notFound: function(){
@@ -43,7 +53,11 @@ SD.App.Router = BBExt.AppRouter.extend({
 });
 
 SD.App = new BBExt.AppView({
+  
+  entities: {
+    'user'  : {},
+    'mail'  : {}
+  },
 
   router: SD.App.Router
-
-});
+}).start();
