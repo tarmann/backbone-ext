@@ -1,0 +1,24 @@
+{
+  "name": "backbone.ext",
+  "description": "Base classes to extend Backbone Models, Collections and Views.",
+  "main": [
+    "./lib/backbone.ext.js",
+    "./lib/core/backbone.ext.js"
+  ],
+  "version": "0.1",
+  "keywords": [
+    "backbone",
+    "framework",
+    "client",
+    "browser"
+  ],
+  "dependencies": {
+    "backbone": "1.0.0 - 1.1.2",
+    "underscore": "1.4.4 - 1.6.0",
+    "jquery": "1.8.0 - 2.1.0"
+  },
+  "devDependencies": {
+    "sinonjs": "1.7.3",
+    "jasmine-sinon": "0.3.1"
+  }
+}
