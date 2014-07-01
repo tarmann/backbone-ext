@@ -1,6 +1,9 @@
-// BBExt
+var BBExt = BBExt || {};
 
-BBExt.AppView = BBExt.LayoutView.extend({
+BBExt.ItemView = Backbone.View.extend({
+
+  // Placeholder for entities settings
+  entities: {},
 
   // Default viewData 
   _viewData: {},
@@ -53,7 +56,7 @@ BBExt.AppView = BBExt.LayoutView.extend({
     if(options.silent) this.trigger('render:after', options);
   },
 
-  // Render single element inside 
+  // TODO: Render single element inside 
   renderEl: function(el, options){
     return this;
   },
@@ -68,8 +71,20 @@ BBExt.AppView = BBExt.LayoutView.extend({
     return this;
   },  
 
-  bindEntity: function(model_or_collection){
-    this._entities.push(model_or_collection);
+  getEntity: function(name){
+  	return this._entities[name];
+  },
+
+  // bind entities from this.entities
+  bindEntities: function(){
+  	_.each(this.entities, function(entity, name){
+      this.bindEntity(name, entity);
+  	}, this);
+  },
+
+  bindEntity: function(name, model_or_collection){
+    this._entities[name] = new model_or_collection();
+    return this;
   },
 
   // Parse content of input fields into a object that will be used
@@ -99,5 +114,5 @@ BBExt.AppView = BBExt.LayoutView.extend({
     this.remove();
   }
 
-};
+});
 

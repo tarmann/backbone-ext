@@ -11,7 +11,7 @@ var CollectionView = {
   renderItemView: function(model, options){
     var viewData  = _.extend({}, { model: model }, this.options.itemViewOptions),
         view      = new this.options.itemView(viewData);
-    
+
     this.$el.append( view.render().el );
 
     return this;

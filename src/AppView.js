@@ -12,11 +12,16 @@ BBExt.AppView = Backbone.View.extend({
 
   initialize: function(options){
     this.options = options;
+  },
+
+  start: function(){
+    // this.bindEntities();
     this.initializeRouter();
   },
 
   initializeRouter: function(options){
     this.router = new this.options.router();
+    this.router.appView = this;
     Backbone.history.start();
     return this;
   }
