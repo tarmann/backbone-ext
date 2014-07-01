@@ -1,6 +1,6 @@
 var BBExt = BBExt || {};
 
-BBExt.AppView = Backbone.View.extend({
+BBExt.AppView = BBExt.LayoutView.extend({
 
   el: function(){
     return document.getElementsByTagName('body')[0];
@@ -15,12 +15,13 @@ BBExt.AppView = Backbone.View.extend({
   },
 
   start: function(){
-    // this.bindEntities();
+    this.bindEntities();
     this.initializeRouter();
   },
 
   initializeRouter: function(options){
     this.router = new this.options.router();
+    this.router.appView = this;
     this.router.appView = this;
     Backbone.history.start();
     return this;

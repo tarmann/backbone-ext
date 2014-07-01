@@ -23,6 +23,10 @@ BBExt.AppRouter = Backbone.Router.extend({
     return ( _.isFunction(this[filter])) ?
       this[filter].call(this, this[callback], args) :
       this[callback].apply(this, args);
-  }
+  },
+
+  notFound: function(){
+    console.log('route not found');
+  }  
 
 });
