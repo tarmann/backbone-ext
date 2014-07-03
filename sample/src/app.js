@@ -72,3 +72,16 @@ SD.App = new BBExt.AppView({
   // footer region
 
 }).start();
+
+
+
+
+
+var MyLayoutView = BBExt.LayoutView.extend({
+  regions: {
+    sidebar: { el: '.sidebar' },
+    content: { el: '.content' }
+  }
+});
+
+var myLayout = new MyLayoutView();

@@ -44,10 +44,10 @@ BBExt.CollectionView = BBExt.ItemView.extend({
   },
 
   // Render empty view
-	renderEmptyView: function(options){
+	renderEmptyView: function(){
     if(! this.getEmptyView() ) return this;
 
-    this.emptyView = new this.getEmptyView(options);
+    this.emptyView = new this.getEmptyView();
 
     this.$el.html( this.emptyView.render().el );
 
