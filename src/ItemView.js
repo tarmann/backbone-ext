@@ -2,11 +2,11 @@ var BBExt = BBExt || {};
 
 BBExt.ItemView = Backbone.View.extend({
 
-  // Placeholder for entities settings
+  // Constructor for entities
   entities: {},
 
   // Default viewData 
-  _viewData: {},
+  viewData: {},
 
   // Store all nested entities (models, collections)
   _entities: {},
@@ -14,8 +14,11 @@ BBExt.ItemView = Backbone.View.extend({
   // Store all nested views 
   _childViews: [],
 
-  // Get viewData object to be used to render view. The view data includes
-  // the current model binded to the view, model resources attached to the view
+  // Store all nested views 
+  childView: [],
+
+  // Return viewData object to be used to render view.
+  // Includes the current model binded to the view, entities attached to the view
   // and custom data provided on options.
   getViewData: function(options){
     var viewData = this._viewData || {};
@@ -24,11 +27,13 @@ BBExt.ItemView = Backbone.View.extend({
       viewData = _.extend(viewData, this.model.toJSON());
     }
 
+    _.each(this._entities, function(model_or_collection, entity){
+      viewData[entity] = model_or_collection.toJSON();
+    }, this);
+
     if(options){
       viewData = _.extend(viewData, options);
-    }
-
-    // TODO: include all entities available
+    }    
 
     return viewData;
   },
@@ -44,16 +49,15 @@ BBExt.ItemView = Backbone.View.extend({
       viewData  : {}
     }, addOptions);
 
-    if(options.silent) this.trigger('render:before', options);
+    if(options.silent) this.trigger('before:render', options);
 
-    // this._beforeRender(options);
+    this._beforeRender(options);
 
     this.$el.html( this.template( this.getViewData(options.viewData) ));
 
-    // this._afterRender(options);
+    this._afterRender(options);
 
     if(options.silent) this.trigger('render', options);
-    if(options.silent) this.trigger('render:after', options);
   },
 
   // TODO: Render single element inside 
@@ -87,10 +91,14 @@ BBExt.ItemView = Backbone.View.extend({
     return this;
   },
 
-  bindView: function(view, id){
+  bindEntity: function(){
+    this._bindEntity(name, model_or_collection);
+  },
+
+  bindView: function(view, name){
   	this._childViews.push({
       cid 	: view.cid,
-      name	: id || view.cid,
+      name	: name || view.cid,
       view 	: view
   	});
 
@@ -100,7 +108,7 @@ BBExt.ItemView = Backbone.View.extend({
   // TODO: move to form mixin
   // Parse content of input fields into a object that will be used
   // as a hash to be saved on the model binded to the view.
-  parseForm: function(){
+  parseForm: function(formName){
     // TODO: parseForm
     return this.afterParseForm(formData);
   },

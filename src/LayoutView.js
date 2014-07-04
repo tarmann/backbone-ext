@@ -56,7 +56,7 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     this._regions[region].view.parentView = this;
     
     // render view on current region
-    // this.$el.empty().append( view.render().el );
+    this.$el.empty().append( view.render(options.renderOptions).el );
     
     // trigger show event
     this.trigger('show:region', this._regions[region]);
