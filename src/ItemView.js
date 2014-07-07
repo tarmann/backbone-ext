@@ -2,7 +2,7 @@ var BBExt = BBExt || {};
 
 BBExt.ItemView = Backbone.View.extend({
 
-  // Constructor for resources (initialized as entitites)
+  // Resources (initialized as entitites)
   resources: {},
 
   // Constructor for entities (initialized resources)
@@ -93,13 +93,18 @@ BBExt.ItemView = Backbone.View.extend({
   },
 
   _bindEntity: function(name, model_or_collection){
-    
+
     if( this.entities[name] ) {
       this._entities[name] = this.entity[name] = this.entities[name];
     } else {
       this._entities[name] = this.entity[name] = new model_or_collection();
+      
+      // TODO: implement events for loaded resources
       this.entity[name].fetch();
     }
+
+    if(name === 'model') this.model = this.entity[name];
+    if(name === 'collection') this.collection = this.entity[name];
 
     return this;
   },

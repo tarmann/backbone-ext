@@ -1,5 +1,5 @@
 SD.Views.AppView = BBExt.AppView.extend({
-  
+
   resources: {
     'user'   : SD.Models.User,
     'mails'  : SD.Collections.UserMail
