@@ -36,12 +36,11 @@ BBExt.LayoutView = BBExt.ItemView.extend({
       close   : _.bind(this._closeRegion, this, region, options)
     };
 
-    // if 
+    // if ...
     if(! this[region]) this[region] = this._regions[region];
   },
 
   _destroyRegion: function(){
-
   },
 
   // Show given View on selected region.

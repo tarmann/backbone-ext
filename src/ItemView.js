@@ -2,7 +2,10 @@ var BBExt = BBExt || {};
 
 BBExt.ItemView = Backbone.View.extend({
 
-  // Constructor for entities
+  // Constructor for resources (initialized as entitites)
+  resources: {},
+
+  // Constructor for entities (initialized resources)
   entities: {},
 
   // Default viewData 
@@ -10,6 +13,9 @@ BBExt.ItemView = Backbone.View.extend({
 
   // Store all nested entities (models, collections)
   _entities: {},
+
+  // Store all nested entities (models, collections)
+  entity: {},
 
   // Store all nested views 
   _childViews: [],
@@ -81,13 +87,20 @@ BBExt.ItemView = Backbone.View.extend({
 
   // bind entities from this.entities
   _bindEntities: function(){
-  	_.each(this.entities, function(entity, name){
+  	_.each(this.resources, function(entity, name){
       this._bindEntity(name, entity);
   	}, this);
   },
 
   _bindEntity: function(name, model_or_collection){
-    this._entities[name] = new model_or_collection();
+    
+    if( this.entities[name] ) {
+      this._entities[name] = this.entity[name] = this.entities[name];
+    } else {
+      this._entities[name] = this.entity[name] = new model_or_collection();
+      this.entity[name].fetch();
+    }
+
     return this;
   },
 
@@ -95,6 +108,7 @@ BBExt.ItemView = Backbone.View.extend({
     this._bindEntity(name, model_or_collection);
   },
 
+  // Bind view to _childViews
   bindView: function(view, name){
   	this._childViews.push({
       cid 	: view.cid,

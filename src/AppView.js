@@ -7,7 +7,8 @@ BBExt.AppView = BBExt.LayoutView.extend({
   },
 
   initialize: function(options){
-    this.options = options;
+    this.options    = options || {};
+    this.entities   = this.options.entities || {};
   },
 
   start: function(){
@@ -18,6 +19,8 @@ BBExt.AppView = BBExt.LayoutView.extend({
     this._initializeRouter();
 
     this._started = true;
+
+    return this;
   },
 
   _initializeDispatcher: function(){
@@ -25,6 +28,8 @@ BBExt.AppView = BBExt.LayoutView.extend({
   },
 
   _initializeRouter: function(options){
+    if(! this.options.router) return;
+
     this.router = new this.options.router();
     this.router.appView = this;
   
