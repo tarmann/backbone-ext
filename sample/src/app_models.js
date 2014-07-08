@@ -6,8 +6,8 @@ var SD = {
   App           : {}
 };
 
-SD.Models.UserMail = Backbone.Model.extend({
-  url: 'user/mails'
+SD.Models.Mail = Backbone.Model.extend({
+  urlRoot: 'http://bbextemailapp.apiary-mock.com/mails'
 });
 
 SD.Models.User = Backbone.Model.extend({
@@ -18,6 +18,6 @@ SD.Collections.User = Backbone.Model.extend({
   url: 'users'
 });
 
-SD.Collections.UserMail = Backbone.Model.extend({
-  url: 'user/mails'
+SD.Collections.Mail = Backbone.Model.extend({
+  url: 'http://bbextemailapp.apiary-mock.com/mails'
 });

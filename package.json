@@ -1,0 +1,31 @@
+{
+  "name": "backbone-ext",
+  "version": "0.1.0",
+  "description": "Base classes to extend Backbone Models, Collections and Views.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tarmann/backbone-ext.git"
+  },
+  "keywords": [
+    "backbonejs",
+    "framework",
+    "javascript"
+  ],
+  "author": "Bruno Tarmann",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/tarmann/backbone-ext/issues"
+  },
+  "devDependencies": {
+    "sinon": "~1.10.2",
+    "chai": "~1.9.1",
+    "time-grunt": "~0.3.2",
+    "grunt": "~0.4.5",
+    "load-grunt-tasks": "~0.6.0",
+    "mocha": "~1.20.1"
+  }
+}
