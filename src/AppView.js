@@ -9,12 +9,12 @@ BBExt.AppView = BBExt.LayoutView.extend({
   initialize: function(options){
     this.options    = options || {};
     this.entities   = this.options.entities || {};
+    this._bindEntities();
   },
 
   start: function(){
     if(this._started) return;
 
-    this._bindEntities();
     this._initializeDispatcher();
     this._initializeRouter();
 
@@ -28,9 +28,9 @@ BBExt.AppView = BBExt.LayoutView.extend({
   },
 
   _initializeRouter: function(options){
-    if(! this.options.router) return;
+    if(! this.appRouter) return;
 
-    this.router = new this.options.router();
+    this.router = new this.appRouter();
     this.router.appView = this;
   
     Backbone.history.start();

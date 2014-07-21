@@ -8,11 +8,11 @@ BBExt.ItemView = Backbone.View.extend({
   // Constructor for entities (initialized resources)
   entities: {},
 
-  // Default viewData 
-  viewData: {},
-
   // Store all nested entities (models, collections)
   _entities: {},
+
+  // Default viewData 
+  viewData: {},
 
   // Store all nested entities (models, collections)
   entity: {},
@@ -87,8 +87,8 @@ BBExt.ItemView = Backbone.View.extend({
 
   // bind entities from this.entities
   _bindEntities: function(){
-  	_.each(this.resources, function(entity, name){
-      this._bindEntity(name, entity);
+  	_.each(this.resources, function(model_or_collection, name){
+      this._bindEntity(name, model_or_collection);
   	}, this);
   },
 
@@ -98,20 +98,23 @@ BBExt.ItemView = Backbone.View.extend({
       this._entities[name] = this.entity[name] = this.entities[name];
     } else {
       this._entities[name] = this.entity[name] = new model_or_collection();
-      
-      // TODO: implement events for loaded resources
-      this.entity[name].fetch();
     }
 
-    if(name === 'model') this.model = this.entity[name];
-    if(name === 'collection') this.collection = this.entity[name];
+    // bind model_or_collection as an entity (one model/collection for each view)
+    // if(name === 'model') this.model = this.entity[name];
+    // if(name === 'collection') this.collection = this.entity[name];
 
     return this;
   },
 
-  bindEntity: function(){
-    this._bindEntity(name, model_or_collection);
+  _fetchEntitites: function(name, options){
+    var xhr = [];
+    _.each(this.entity, function(){}, this);
   },
+
+  // bindEntity: function(){
+  //   this._bindEntity(name, model_or_collection);
+  // },
 
   // Bind view to _childViews
   bindView: function(view, name){
