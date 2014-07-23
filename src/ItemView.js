@@ -2,6 +2,9 @@ var BBExt = BBExt || {};
 
 BBExt.ItemView = Backbone.View.extend({
 
+  // Default viewData 
+  viewData: {},
+
   // Resources (initialized as entitites)
   resources: {},
 
@@ -11,17 +14,14 @@ BBExt.ItemView = Backbone.View.extend({
   // Store all nested entities (models, collections)
   _entities: {},
 
-  // Default viewData 
-  viewData: {},
-
   // Store all nested entities (models, collections)
   entity: {},
 
   // Store all nested views 
-  _childViews: [],
+  // _childViews: [],
 
-  // Store all nested views 
-  childView: [],
+  // Placeholder method for when view is initialized.
+  onInitialize: function(){},
 
   // Return viewData object to be used to render view.
   // Includes the current model binded to the view, entities attached to the view
@@ -64,6 +64,8 @@ BBExt.ItemView = Backbone.View.extend({
     this._afterRender(options);
 
     if(options.silent) this.trigger('render', options);
+
+    return this;
   },
 
   // TODO: Render single element inside 
@@ -71,12 +73,12 @@ BBExt.ItemView = Backbone.View.extend({
     return this;
   },
 
-  // Placeholder method executed before view is rendered
+  // Private placeholder method executed before view is rendered
   _beforeRender: function(options){
     return this;
   },
 
-  // Placeholder method executed after view is rendered
+  // Private placeholder method executed after view is rendered
   _afterRender: function(options){
     return this;
   },  
@@ -100,7 +102,7 @@ BBExt.ItemView = Backbone.View.extend({
       this._entities[name] = this.entity[name] = new model_or_collection();
     }
 
-    // bind model_or_collection as an entity (one model/collection for each view)
+    // bind model_or_collection as an entity (one model_or_collection for each view)
     // if(name === 'model') this.model = this.entity[name];
     // if(name === 'collection') this.collection = this.entity[name];
 
@@ -112,45 +114,47 @@ BBExt.ItemView = Backbone.View.extend({
     _.each(this.entity, function(){}, this);
   },
 
-  // bindEntity: function(){
-  //   this._bindEntity(name, model_or_collection);
-  // },
+  bindEntity: function(name, model_or_collection){
+    this._bindEntity(name, model_or_collection);
+  },
+
+  clearChildViews: function(){
+    this.childView = [];
+  },
 
   // Bind view to _childViews
   bindView: function(view, name){
-  	this._childViews.push({
+  	if(this === view) return;
+
+    this._childViews = this._childViews || [];
+
+    this._childViews.push({
       cid 	: view.cid,
       name	: name || view.cid,
       view 	: view
   	});
 
+    view.parentView = this;
+
   	return this;
-  },
-
-  // TODO: move to form mixin
-  // Parse content of input fields into a object that will be used
-  // as a hash to be saved on the model binded to the view.
-  parseForm: function(formName){
-    // TODO: parseForm
-    return this.afterParseForm(formData);
-  },
-
-  // Custom parse the hash from parseForm method. 
-  // TODO: move to form mixin
-  afterParseForm: function(formData){
-    return formData;
-	},
-
-  // Parse form and save content on model binded to view.
-  // TODO: move to form mixin
-  save: function(options){
-    if(!this.model) return;
-    this.model.save( this.parseForm() );
   },
 
   // Remove view
   close: function(){
+    
+    if(this._childViews){
+      console.log('close childViews', this._childViews.length, this);
+
+      _.each(this._childViews, function(childView, i){
+        if(this !== childView.view) childView.view.close();
+        // else console.log('View is binded to itself.');
+      }, this);
+
+      this.clearChildViews();
+    }
+
     this.trigger('close', this);
+
     this.remove();
   }
 

@@ -13,28 +13,30 @@ SD.App.Router = BBExt.AppRouter.extend({
 
     // Settings Routers
     { prefix: 'settings', filter: 'settingsFilter', routes: {
+      ''                        : 'settings',
       '/personal'               : 'settingsPersonal',
       '/personal/password'      : 'settingsPersonalPassword'
     }}
 
   ],
 
+  onStart: function(){
+    this.appView.header.show( new SD.Views.Header() );
+  },
+
   mailFilter: function(route, args){
-    // load mail layout view
-    // this.appView.loadView('main', mailLayoutView);
-    // this.appView.regions.main.loadView('sidebar', mailSidebarView);
+    console.log('mailFilter', args);   
+    this.appView.content.show( new SD.Views.Mails.LayoutView() );
     route.apply(this, args);
   },
 
   mail: function(id){
-    // this.appView.regions.main.loadView('content', mailView);
-    // this.appView.show( new SD.Views.Mails({ collection: new SD.Collections.Mail().set('Id', id) }));
     console.log('mail', id);
   },
 
   mails: function(id){
-    // this.appView.regions.main.loadView('content', mailCollectionView);
-    console.log('mail folder', id, this.appView);
+    console.log('mails', id);
+    this.appView.content.view.main.show( new SD.Views.Mails.CollectionView() );
   },
 
   settingsFilter: function(route, args){

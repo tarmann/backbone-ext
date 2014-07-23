@@ -18,14 +18,14 @@ SD.Models.User = Backbone.Model.extend({
   url: 'http://bbextemailapp.apiary-mock.com/user'
 });
 
-SD.Collections.User = Backbone.Model.extend({
+SD.Collections.User = Backbone.Collection.extend({
   url: 'http://bbextemailapp.apiary-mock.com/user'
 });
 
-SD.Collections.Mail = Backbone.Model.extend({
+SD.Collections.Mail = Backbone.Collection.extend({
   url: 'http://bbextemailapp.apiary-mock.com/mails'
 });
 
-SD.Collections.MailFolder = Backbone.Model.extend({
+SD.Collections.MailFolder = Backbone.Collection.extend({
   url: 'http://bbextemailapp.apiary-mock.com/mail/folders'
 });

@@ -19,38 +19,30 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <body>
 
-  <div class="container" data-region="main">
-    <a href="#rfxs/"></a>
-  </div>
-
   <div class="container">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="active"><a href="#mails">Messages</a></li>
-      <li><a href="#settings">Settings</a></li>
-    </ul>
-
-    <div class="col-sm-3">
-      <a href="#mail/folder/inbox">Inbox</a>
-      <a href="#mail/folder/draft">Draft</a>
-      <a href="#mail/folder/trash">Trash</a>
-    </div>
-
-    <div class="col-sm-3">
-      <a href="#mail/123">This is the first message.</a>
-    </div>  
+    <div data-region="header"></div>
+    <div data-region="content"></div>
   </div>
-
-
 
   <script type="text/javascript" src="../src/AppRouter.js"></script>
+  
   <script type="text/javascript" src="../src/ItemView.js"></script>
+  <script type="text/javascript" src="../src/CollectionView.js"></script>
   <script type="text/javascript" src="../src/LayoutView.js"></script>
   <script type="text/javascript" src="../src/AppView.js"></script>
 
   <script type="text/javascript" src="src/app_models.js"></script>
   <script type="text/javascript" src="src/app_router.js"></script>
   <script type="text/javascript" src="src/app.js"></script>
+
+  <script>
+    var mails = {
+      inbox: [{ title: 'foo' }, { title: 'bar' }],
+      draft: [{ title: 'this is a draft' }],
+      trash: [{ title: 'foo' }, { title: 'bar' }, { title: 'foo' }, { title: 'bar' }]
+    };
+  </script>
+
 
   <script>
   // it8n

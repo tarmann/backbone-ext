@@ -2,6 +2,8 @@ var BBExt = BBExt || {};
 
 BBExt.LayoutView = BBExt.ItemView.extend({
 
+  _childViews: [],
+
   // regions constructor
   regions: {},
 
@@ -9,10 +11,12 @@ BBExt.LayoutView = BBExt.ItemView.extend({
   _regions: {},
 
   // region shortcut
-  region: null,
+  region: {},
 
   initialize: function(options){
     this.options = options;
+    
+    this.clearChildViews();
     this._initializeRegions();
   },
 
@@ -40,22 +44,25 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     if(! this[region]) this[region] = this._regions[region];
   },
 
-  _destroyRegion: function(){
-  },
+  _destroyRegion: function(){},
 
   // Show given View on selected region.
   _showRegion: function(region, options, view){
     this._closeRegion(region);
-    
+
     // trigger before event
     this.trigger('before:show:region', this._regions[region]);
     
     // bind view and parentView to region obj
     this._regions[region].view = view;
-    this._regions[region].view.parentView = this;
+
+    // this._regions[region].view.parentView = this;
+    this.bindView( view, 'region_' + region );
     
     // render view on current region
-    this.$el.empty().append( view.render(options.renderOptions).el );
+    this._regions[region].$el
+      .empty()
+      .append( view.render(options.renderOptions).el );
     
     // trigger show event
     this.trigger('show:region', this._regions[region]);
@@ -73,6 +80,10 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     } else {
       this._regions[region].view.remove();
     }
+
+    // this._regions[region].$el.html('');
+    // delete this._regions[region].view;
+    // this._regions[region].view = null;
 
     this.trigger('close:region', this._regions[region]);
   },

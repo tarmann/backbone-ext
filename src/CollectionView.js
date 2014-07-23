@@ -2,19 +2,31 @@ var BBExt = BBExt || {};
 
 BBExt.CollectionView = BBExt.ItemView.extend({
 
-  initialize: function(){
+  initialize: function(options){
+    this.options = options || {};
+    
     this._bindChildViews();
+
+    this.onInitialize(options);
   },
+
+  onInitialize: function(){},
 
   // Create a sub view for every model in the collection
   _bindChildViews: function(){
-    var viewData  = _.extend({}, this.options.itemViewOptions),
-        ItemView  = this.options.itemView;
+    this.clearChildViews();
+    this.collection.each(this._bindChildView, this);
+  },
 
-    this.collection.each(function(model) {
-      var view = new ItemView(_.extend({}, { model: model }, viewData));
-      this.bindView( view );
-    }, this);
+  _bindChildView: function(model){
+    var ItemView  = this._getItemView(),
+        viewOptions = _.extend({}, { model: model }, this.options.itemViewOptions);
+
+    this.bindView( new ItemView(viewOptions) );
+  },
+
+  _getItemView: function(){
+    return this.options.itemView || this.itemView;
   },
 
   // Render collection view, if empty render emptyView
@@ -26,10 +38,13 @@ BBExt.CollectionView = BBExt.ItemView.extend({
       this.renderCollectionView();
       this.trigger('render', this);
     }
+
+    return this;
   },
 
   // Render each subview, appending to our root element
   renderCollectionView: function(){
+    // TODO: check for browser compatibility
     var container = document.createDocumentFragment();
 
     this.getCollectionEl().empty();
@@ -38,7 +53,7 @@ BBExt.CollectionView = BBExt.ItemView.extend({
       container.appendChild(childView.view.render().el);
     }, this);
 
-    this.getCollectionEl().append( this.container );
+    this.getCollectionEl().append( container );
 
     return this;
   },
