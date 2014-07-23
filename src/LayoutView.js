@@ -5,10 +5,10 @@ BBExt.LayoutView = BBExt.ItemView.extend({
   _childViews: [],
 
   // regions constructor
-  regions: {},
+  // regions: {},
 
   // store regions logic
-  _regions: {},
+  // _regions: {},
 
   // region shortcut
   region: {},
@@ -16,11 +16,15 @@ BBExt.LayoutView = BBExt.ItemView.extend({
   initialize: function(options){
     this.options = options;
     
-    this.clearChildViews();
+    this._bindEntities();
+
     this._initializeRegions();
   },
 
   _initializeRegions: function(){
+    this.clearChildViews();
+    this.clearRegions();
+
     _.each(this.regions, function(options, region){
       this._createRegion(region, options);
     }, this);
@@ -29,11 +33,16 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     this.region = this._regions;
   },
 
+  clearRegions: function(){
+    this._regions = {};
+  },
+
   _createRegion: function(region, options){
     this._regions[region] = {
       // region attributes
-      $el     : this.$(options.el),
       name    : region,
+      el      : options.el,
+      $el     : null,
       view    : null,
       // region methods
       show    : _.bind(this._showRegion, this, region, options),
@@ -44,11 +53,20 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     if(! this[region]) this[region] = this._regions[region];
   },
 
+  _bindRegionEl: function(region){
+    if( this._regions[region].$el ) return;
+    this._regions[region].$el = this.$( this._regions[region].el );
+  },
+
   _destroyRegion: function(){},
 
   // Show given View on selected region.
   _showRegion: function(region, options, view){
     this._closeRegion(region);
+
+    // console.log('_showRegion', region);
+
+    this._bindRegionEl(region);
 
     // trigger before event
     this.trigger('before:show:region', this._regions[region]);
@@ -66,6 +84,7 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     
     // trigger show event
     this.trigger('show:region', this._regions[region]);
+    this.trigger('show:region:'+region, this._regions[region]);
     
     return view;
   },
@@ -80,10 +99,6 @@ BBExt.LayoutView = BBExt.ItemView.extend({
     } else {
       this._regions[region].view.remove();
     }
-
-    // this._regions[region].$el.html('');
-    // delete this._regions[region].view;
-    // this._regions[region].view = null;
 
     this.trigger('close:region', this._regions[region]);
   },

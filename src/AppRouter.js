@@ -4,7 +4,8 @@ BBExt.AppRouter = Backbone.Router.extend({
 
   initialize: function(options){
     this.appView = options.appView;
-    this.listenTo( this.appView, 'start', this.onStart );
+    this.listenTo( this.appView, 'start', this.onAppStart );
+    this.listenTo( this.appView, 'initialize', this.onAppInitialize );
   },
 
   _bindRoutes: function(){
@@ -20,7 +21,7 @@ BBExt.AppRouter = Backbone.Router.extend({
   // Filter receives fn and args as params.
   // Use fn.apply(this, args); to continue execution.
   _callRoute: function(routeGroup, filter, callback){
-    var args = Array.prototype.slice.call(arguments, 2),
+    var args = Array.prototype.slice.call(arguments, 3),
         filterCallback;
 
     if(!_.isFunction(this[callback])) return;

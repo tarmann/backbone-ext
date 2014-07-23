@@ -9,7 +9,7 @@ BBExt.ItemView = Backbone.View.extend({
   resources: {},
 
   // Constructor for entities (initialized resources)
-  entities: {},
+  // entities: {},
 
   // Store all nested entities (models, collections)
   _entities: {},
@@ -21,6 +21,18 @@ BBExt.ItemView = Backbone.View.extend({
   // _childViews: [],
 
   // Placeholder method for when view is initialized.
+  initialize: function(options){
+    this.options = options || {};
+    this.entities = this.options.entities || {};
+    
+    this.beforeInitialize();
+    this.clearChildViews();
+    this._bindEntities();
+    this.onInitialize(options);
+  },
+
+  // Placeholder method for when view is initialized.
+  beforeInitialize: function(){},
   onInitialize: function(){},
 
   // Return viewData object to be used to render view.
@@ -39,8 +51,12 @@ BBExt.ItemView = Backbone.View.extend({
 
     if(options){
       viewData = _.extend(viewData, options);
-    }    
+    }
 
+    return this.parseViewData(viewData);
+  },
+
+  parseViewData: function(viewData){
     return viewData;
   },
 
@@ -111,6 +127,7 @@ BBExt.ItemView = Backbone.View.extend({
 
   _fetchEntitites: function(name, options){
     var xhr = [];
+    
     _.each(this.entity, function(){}, this);
   },
 
@@ -119,14 +136,12 @@ BBExt.ItemView = Backbone.View.extend({
   },
 
   clearChildViews: function(){
-    this.childView = [];
+    this._childViews = [];
   },
 
   // Bind view to _childViews
   bindView: function(view, name){
   	if(this === view) return;
-
-    this._childViews = this._childViews || [];
 
     this._childViews.push({
       cid 	: view.cid,
@@ -141,15 +156,9 @@ BBExt.ItemView = Backbone.View.extend({
 
   // Remove view
   close: function(){
-    
-    if(this._childViews){
-      console.log('close childViews', this._childViews.length, this);
 
-      _.each(this._childViews, function(childView, i){
-        if(this !== childView.view) childView.view.close();
-        // else console.log('View is binded to itself.');
-      }, this);
-
+    if( this._childViews.length ){
+      _.invoke( _.pluck(this._childViews, 'view'), 'close' );
       this.clearChildViews();
     }
 

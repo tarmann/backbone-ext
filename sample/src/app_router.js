@@ -20,28 +20,36 @@ SD.App.Router = BBExt.AppRouter.extend({
 
   ],
 
-  onStart: function(){
+  onAppStart: function(){
     this.appView.header.show( new SD.Views.Header() );
   },
 
   mailFilter: function(route, args){
-    console.log('mailFilter', args);   
-    this.appView.content.show( new SD.Views.Mails.LayoutView() );
+    // console.log('route:mailFilter', args);
     route.apply(this, args);
   },
 
   mail: function(id){
-    console.log('mail', id);
+    // console.log('route:mail', id);
   },
 
-  mails: function(id){
-    console.log('mails', id);
-    this.appView.content.view.main.show( new SD.Views.Mails.CollectionView() );
+  mails: function(query){
+    // console.log('route:mails', query);
+    this.appView.content.show( new SD.Views.Mails.LayoutView() );
+    
+    this.appView.content.view.main.show( new SD.Views.Mails.CollectionView({
+      filter          : query,
+      itemViewOptions : { entities: this.appView.entities }
+    }) );
   },
 
   settingsFilter: function(route, args){
-    // load settings layout view
+    // console.log('route:settingsFilter', args);   
     route.apply(this, args);
+  },
+
+  settings: function(){
+    this.appView.content.show( new SD.Views.Settings.LayoutView() );
   }
 
 });

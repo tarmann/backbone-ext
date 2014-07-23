@@ -5,8 +5,10 @@ BBExt.CollectionView = BBExt.ItemView.extend({
   initialize: function(options){
     this.options = options || {};
     
+    this.beforeInitialize(options);
+    
     this._bindChildViews();
-
+    
     this.onInitialize(options);
   },
 
@@ -32,14 +34,12 @@ BBExt.CollectionView = BBExt.ItemView.extend({
   // Render collection view, if empty render emptyView
   render: function(){
     if(this.collection.length === 0){
-      this.renderEmptyView();
       this.trigger('render:empty', this);
+      return this.renderEmptyView();
     } else {
-      this.renderCollectionView();
       this.trigger('render', this);
+      return this.renderCollectionView();
     }
-
-    return this;
   },
 
   // Render each subview, appending to our root element

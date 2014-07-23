@@ -10,8 +10,12 @@ BBExt.AppView = BBExt.LayoutView.extend({
     this.options    = options || {};
     this.entities   = this.options.entities || {};
     
+    this.clearChildViews();
+    
     this._bindEntities();
     this._initializeRegions();
+
+    this.trigger('initialize');
   },
 
   start: function(){

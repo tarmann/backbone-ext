@@ -15,7 +15,13 @@ SD.Models.Mail = Backbone.Model.extend({
 });
 
 SD.Models.User = Backbone.Model.extend({
-  url: 'http://bbextemailapp.apiary-mock.com/user'
+  
+  url: 'http://bbextemailapp.apiary-mock.com/user',
+
+  defaults: {
+    'Name': 'Tony Stark'
+  }
+
 });
 
 SD.Collections.User = Backbone.Collection.extend({
