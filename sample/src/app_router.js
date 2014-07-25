@@ -3,6 +3,10 @@ SD.App.Router = BBExt.AppRouter.extend({
   appRoutes: [
     
     // Base Routers
+    {  prefix: '', filter: 'mailFilter', routes: {
+      ''                        : 'mails'
+    }},
+
     {  prefix: 'mail', filter: 'mailFilter', routes: {
       ''                        : 'mails',
       '/folder/:folder'         : 'mails',
@@ -25,26 +29,31 @@ SD.App.Router = BBExt.AppRouter.extend({
   },
 
   mailFilter: function(route, args){
-    // console.log('route:mailFilter', args);
+    this.appView.content.show( new SD.Views.Mails.LayoutView() );
+    
     route.apply(this, args);
   },
 
-  mail: function(id){
-    // console.log('route:mail', id);
+  mails: function(query){
+    var region         = this.appView.content.view.main,
+        collection     = this.appView.entity.mails;
+    
+    // show view
+    region.show( new SD.Views.Mails.CollectionView({
+      collection       : collection,
+      itemViewOptions  : { entities: this.appView.entities }
+    }));
+    
+    // fetch entity
+    collection.fetch({ data: { folder: query }, reset: true });
   },
 
-  mails: function(query){
-    // console.log('route:mails', query);
-    this.appView.content.show( new SD.Views.Mails.LayoutView() );
-    
-    this.appView.content.view.main.show( new SD.Views.Mails.CollectionView({
-      filter          : query,
-      itemViewOptions : { entities: this.appView.entities }
-    }) );
+  mail: function(id){  
+    this.appView.content.view.main.show( new SD.Views.Mail() );
+    this.appView.content.view.main.view.model.fetch();
   },
 
   settingsFilter: function(route, args){
-    // console.log('route:settingsFilter', args);   
     route.apply(this, args);
   },
 

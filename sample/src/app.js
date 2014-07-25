@@ -15,9 +15,15 @@ SD.Views.AppView = BBExt.AppView.extend({
   },
 
   resources: {
-    'user'         : SD.Models.User,
-    'mails'        : SD.Collections.Mail,
-    'mailFolders'  : SD.Collections.MailFolder
+    'user'           : SD.Models.User,
+    'mails'          : SD.Collections.Mail,
+
+    'mails_inbox'    : SD.Collections.Mail,
+    'mails_draft'    : SD.Collections.Mail,
+    'mails_trash'    : SD.Collections.Mail,
+    
+    'mailResponses'  : SD.Collections.Mail,
+    'mailFolders'    : SD.Collections.MailFolder
   }
 
 });
@@ -52,7 +58,7 @@ SD.Views.Settings.LayoutView = BBExt.LayoutView.extend({
   
   className: 'settings',
 
-  template: _.template( ['Settings layout view...'].join('') )
+  template: _.template( ['<div style="padding: 300px 0px; border: solid 1px #ccc; text-align:center;">Settings layout view...</div>'].join('') )
 
 });
 
@@ -69,12 +75,14 @@ SD.Views.Mails.LayoutView = BBExt.LayoutView.extend({
   
   className: 'mails',
 
-  template: _.template( ['<div class="col-sm-3" data-region="sidebar">',
+  template: _.template( ['<div style="min-height: 400px; border: solid 1px #ccc;" class="clearfix">',
+    '<div class="col-sm-3" data-region="sidebar">',
     '<div><a href="#mail/folder/inbox">Inbox</a></div>',
     '<div><a href="#mail/folder/draft">Draft</a></div>',
     '<div><a href="#mail/folder/trash">Trash</a></div>',
     '</div>',
     '<div class="col-sm-9" data-region="main">',
+    '</div>',
     '</div>'].join('') ),
 
   regions: {
@@ -102,17 +110,7 @@ SD.Views.Mails.ItemView = BBExt.ItemView.extend({
 
   parseViewData: function(viewData){
     viewData.customValue = 'This is a custom value!';
-    console.log(viewData);
     return viewData;
-  },
-
-  onInitialize: function( options ){
-    this.entity.responses.reset([
-      { id: 456541, title: 'Job Code 1234: District Sales Manager - Your Name' },
-      { id: 546545, title: 'Meeting Follow Up - Your Name' },
-      { id: 545223, title: 'ABC College Informational Interview Request' },
-      { id: 545624, title: 'Managing Director Position' }]
-    );
   }
 
 });
@@ -125,25 +123,47 @@ SD.Views.Mails.CollectionView = BBExt.CollectionView.extend({
 
   template: _.template(''),
   
-  itemView: SD.Views.Mails.ItemView,
-  
-  mails: {
-    'inbox': [
-      { id: 456541, title: 'Job Code 1234: District Sales Manager - Your Name' },
-      { id: 546545, title: 'Meeting Follow Up - Your Name' },
-      { id: 545223, title: 'ABC College Informational Interview Request' },
-      { id: 545624, title: 'Managing Director Position' }],
+  itemView: SD.Views.Mails.ItemView
 
-    'draft': [
-      { id: 5, title: 'draft' },
-      { id: 6, title: 'bar' }],
-    
-    'trash': [
-      { id: 7, title: 'trash' } ]
+});
+
+/* 
+ * ========================================================================
+ * Mails
+ * ========================================================================
+ * 
+ */
+
+SD.Views.Mail = BBExt.ItemView.extend({
+  
+  model: new SD.Models.Mail(),
+
+  className: 'mail',
+
+  template: _.template( ['<div>',
+    'To: <%=user.Name%>.',
+    ' Message: <a href="#mail/<%=id%>"><%=title%></a> .',
+    '<br />',
+    '<br />',
+    '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis expedita quia quam numquam, sapiente minima velit quas exercitationem ullam consequuntur eum nisi dolores consectetur doloremque veritatis assumenda dolorem natus excepturi!</p>',
+    '<br />',
+    '<%=customValue%>',
+    '<hr />',
+    '<p><a href="#mail/<%=id%>/respond">Respond</a></p>',
+    '</div>'].join('') ),
+
+  onInitialize: function(){
+    this.listenTo( this.model, 'request', this.renderLoading );
+    this.listenTo( this.model, 'sync', this.onSync );
   },
 
-  beforeInitialize: function( options ){
-    this.collection.reset( this.mails[options.filter] );
+  onSync: function(){
+    this.render();
+  },
+
+  parseViewData: function(viewData){
+    viewData.customValue = 'This is a custom value!';
+    return viewData;
   }
 
 });

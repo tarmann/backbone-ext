@@ -25,14 +25,17 @@ BBExt.ItemView = Backbone.View.extend({
     this.options = options || {};
     this.entities = this.options.entities || {};
     
-    this.beforeInitialize();
     this.clearChildViews();
+    
+    this.beforeInitialize();
     this._bindEntities();
     this.onInitialize(options);
   },
 
   // Placeholder method for when view is initialized.
   beforeInitialize: function(){},
+  
+  // Placeholder method for when view is initialized.
   onInitialize: function(){},
 
   // Return viewData object to be used to render view.
@@ -41,13 +44,13 @@ BBExt.ItemView = Backbone.View.extend({
   getViewData: function(options){
     var viewData = this._viewData || {};
     
-    if(this.model){
-      viewData = _.extend(viewData, this.model.toJSON());
-    }
-
     _.each(this._entities, function(model_or_collection, entity){
       viewData[entity] = model_or_collection.toJSON();
     }, this);
+
+    if(this.model){
+      viewData = _.extend(viewData, this.model.toJSON());
+    }
 
     if(options){
       viewData = _.extend(viewData, options);
@@ -64,7 +67,7 @@ BBExt.ItemView = Backbone.View.extend({
   // Takes viewData and silent as options.
   // Trigger the following events: render:before, render:after, render.
   render: function(addOptions){
-    if(!this.template) return this;
+    if(! this.template) return this;
 
     var options = _.extend({}, {
       silent    : false,
@@ -85,6 +88,11 @@ BBExt.ItemView = Backbone.View.extend({
   },
 
   // TODO: Render single element inside 
+  renderLoading: function(){
+    this.$el.html('loading...');
+  },
+
+  // TODO: Render single element inside 
   renderEl: function(el, options){
     return this;
   },
@@ -99,8 +107,8 @@ BBExt.ItemView = Backbone.View.extend({
     return this;
   },  
 
-  getEntity: function(name){
-  	return this._entities[name];
+  getEntity: function(entity_or_entities){
+  	return this._entities[entity_or_entities];
   },
 
   // bind entities from this.entities
@@ -157,7 +165,7 @@ BBExt.ItemView = Backbone.View.extend({
   // Remove view
   close: function(){
 
-    if( this._childViews.length ){
+    if( this._childViews ){
       _.invoke( _.pluck(this._childViews, 'view'), 'close' );
       this.clearChildViews();
     }

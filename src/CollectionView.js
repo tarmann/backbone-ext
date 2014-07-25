@@ -7,17 +7,26 @@ BBExt.CollectionView = BBExt.ItemView.extend({
     
     this.beforeInitialize(options);
     
-    this._bindChildViews();
+    // this._bindChildViews();
+    this._bindEvents();
     
     this.onInitialize(options);
   },
 
   onInitialize: function(){},
 
+  // TODO: wait for all entities required to load
+  _bindEvents: function(){
+    this.listenTo(this.collection, 'request', this.renderLoading);
+    this.listenTo(this.collection, 'reset', this._bindChildViews);
+    this.once('change:child_views', this.render);
+  },
+
   // Create a sub view for every model in the collection
   _bindChildViews: function(){
     this.clearChildViews();
     this.collection.each(this._bindChildView, this);
+    this.trigger('change:child_views');
   },
 
   _bindChildView: function(model){
@@ -33,13 +42,16 @@ BBExt.CollectionView = BBExt.ItemView.extend({
 
   // Render collection view, if empty render emptyView
   render: function(){
+
     if(this.collection.length === 0){
-      this.trigger('render:empty', this);
-      return this.renderEmptyView();
+      this.renderEmptyView();
     } else {
-      this.trigger('render', this);
-      return this.renderCollectionView();
+      this.renderCollectionView();
     }
+    
+    this.trigger('render', this);
+
+    return this;
   },
 
   // Render each subview, appending to our root element
@@ -58,13 +70,16 @@ BBExt.CollectionView = BBExt.ItemView.extend({
     return this;
   },
 
-  // Render empty view
+  // TODO: render empty view
 	renderEmptyView: function(){
-    if(! this.getEmptyView() ) return this;
+    // if(! this.getEmptyView() ) return this;
 
-    this.emptyView = new this.getEmptyView();
+    // this.emptyView = new this.getEmptyView();
 
-    this.$el.html( this.emptyView.render().el );
+    // this.$el.html( this.emptyView.render().el );
+    this.getCollectionEl().html( 'Collection is empty.' );
+
+    this.trigger('render:empty', this);
 
     return this;
 	},

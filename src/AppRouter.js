@@ -8,6 +8,14 @@ BBExt.AppRouter = Backbone.Router.extend({
     this.listenTo( this.appView, 'initialize', this.onAppInitialize );
   },
 
+  refresh: function(){
+    Backbone.history.loadUrl(Backbone.history.fragment);
+  },
+
+  setFragment: function(fragment){
+    window.history.pushState('', '', fragment);
+  },
+
   _bindRoutes: function(){
     _.each(this.appRoutes, function(routeGroup){
       _.each(routeGroup.routes, function(callback, route){

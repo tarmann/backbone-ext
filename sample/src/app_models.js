@@ -11,7 +11,15 @@ SD.Models.MailFolder = Backbone.Model.extend({
 });
 
 SD.Models.Mail = Backbone.Model.extend({
-  urlRoot: 'http://bbextemailapp.apiary-mock.com/mails'
+  
+  urlRoot: 'http://bbextemailapp.apiary-mock.com/mails',
+
+  defaults: {
+    'id'      : 1,
+    'title'   : '',
+    'body'    : '',
+  }
+
 });
 
 SD.Models.User = Backbone.Model.extend({
@@ -19,7 +27,7 @@ SD.Models.User = Backbone.Model.extend({
   url: 'http://bbextemailapp.apiary-mock.com/user',
 
   defaults: {
-    'Name': 'Tony Stark'
+    'Name'    : 'Tony Stark'
   }
 
 });
@@ -29,7 +37,9 @@ SD.Collections.User = Backbone.Collection.extend({
 });
 
 SD.Collections.Mail = Backbone.Collection.extend({
+  
   url: 'http://bbextemailapp.apiary-mock.com/mails'
+
 });
 
 SD.Collections.MailFolder = Backbone.Collection.extend({

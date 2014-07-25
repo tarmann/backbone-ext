@@ -39,7 +39,7 @@ BBExt.AppView = BBExt.LayoutView.extend({
     if(! this.appRouter) return;
 
     this.router = new this.appRouter({ appView: this });
-
+    
     Backbone.history.start();
 
     return this;
