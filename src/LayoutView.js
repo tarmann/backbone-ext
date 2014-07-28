@@ -2,7 +2,7 @@ var BBExt = BBExt || {};
 
 BBExt.LayoutView = BBExt.ItemView.extend({
 
-  _childViews: [],
+  _bbExt: 'LayoutView',
 
   // regions constructor
   // regions: {},
@@ -11,26 +11,29 @@ BBExt.LayoutView = BBExt.ItemView.extend({
   // _regions: {},
 
   // region shortcut
-  region: {},
+  // region: {},
 
   initialize: function(options){
     this.options = options;
     
     this._bindEntities();
 
+    this._initializeLayoutView();
+  },
+
+  _initializeLayoutView: function(){
+    this.clearChildViews();
+    this.clearRegions();
     this._initializeRegions();
   },
 
   _initializeRegions: function(){
-    this.clearChildViews();
-    this.clearRegions();
-
     _.each(this.regions, function(options, region){
       this._createRegion(region, options);
     }, this);
 
     // assign shortcut for region
-    this.region = this._regions;
+    this.region = this._regions;    
   },
 
   clearRegions: function(){

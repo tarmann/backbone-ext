@@ -1,4 +1,6 @@
-var BaseModel = {
+var BBExt = BBExt || {};
+
+BBExt.BaseModel = Backbone.Model.extend({
 
   // Overwrites backbone save method allowing to trim attributes
   // and only save attributes on serverAttrs object.
@@ -76,5 +78,4 @@ var BaseModel = {
     $.ajax(ajax);
   }
 
-};
-
+});

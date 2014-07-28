@@ -17,11 +17,6 @@ SD.Views.AppView = BBExt.AppView.extend({
   resources: {
     'user'           : SD.Models.User,
     'mails'          : SD.Collections.Mail,
-
-    'mails_inbox'    : SD.Collections.Mail,
-    'mails_draft'    : SD.Collections.Mail,
-    'mails_trash'    : SD.Collections.Mail,
-    
     'mailResponses'  : SD.Collections.Mail,
     'mailFolders'    : SD.Collections.MailFolder
   }
@@ -76,12 +71,16 @@ SD.Views.Mails.LayoutView = BBExt.LayoutView.extend({
   className: 'mails',
 
   template: _.template( ['<div style="min-height: 400px; border: solid 1px #ccc;" class="clearfix">',
-    '<div class="col-sm-3" data-region="sidebar">',
-    '<div><a href="#mail/folder/inbox">Inbox</a></div>',
-    '<div><a href="#mail/folder/draft">Draft</a></div>',
-    '<div><a href="#mail/folder/trash">Trash</a></div>',
+    '<div class="col-sm-12" data-region="tabs" style="border:solid 1px #ccc; min-height: 40px;">',
     '</div>',
-    '<div class="col-sm-9" data-region="main">',
+    '<div class="col-sm-3" data-region="sidebar" style="border:solid 1px #ccc;">',
+    '<ul class="nav nav-pills nav-stacked">',
+    '<li><a href="#mail/folder/inbox">Inbox</a></li>',
+    '<li><a href="#mail/folder/draft">Draft</a></li>',
+    '<li><a href="#mail/folder/trash">Trash</a></li>',
+    '</ul>',
+    '</div>',
+    '<div class="col-sm-9" data-region="main" style="border:solid 1px #ccc;">',
     '</div>',
     '</div>'].join('') ),
 
@@ -149,8 +148,14 @@ SD.Views.Mail = BBExt.ItemView.extend({
     '<br />',
     '<%=customValue%>',
     '<hr />',
-    '<p><a href="#mail/<%=id%>/respond">Respond</a></p>',
+    '<p><a href="#mail/<%=id%>/respond" data-action="respond">Respond</a> | ',
+    '<a href="#mail/<%=id%>/respond" data-action="close">Close</a></p>',
     '</div>'].join('') ),
+
+  events: {
+    'click [data-action="respond"]:first': '_respond',
+    'click [data-action="close"]:first': '_close'
+  },
 
   onInitialize: function(){
     this.listenTo( this.model, 'request', this.renderLoading );
@@ -164,6 +169,21 @@ SD.Views.Mail = BBExt.ItemView.extend({
   parseViewData: function(viewData){
     viewData.customValue = 'This is a custom value!';
     return viewData;
+  },
+
+  _close: function(e){
+    e.preventDefault();
+    this.close();
+  },
+
+  _respond: function(e){
+    e.preventDefault();
+
+    if(! this.getView('response')){
+      this.bindView(new SD.Views.Mail({ model: this.model }), 'response');
+    }
+
+    this.$el.append( this.getView('response').render().el );
   }
 
 });

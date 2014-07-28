@@ -2,6 +2,8 @@ var BBExt = BBExt || {};
 
 BBExt.CollectionView = BBExt.ItemView.extend({
 
+  _bbExt: 'CollectionView',
+
   initialize: function(options){
     this.options = options || {};
     

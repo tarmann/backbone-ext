@@ -2,11 +2,13 @@ var BBExt = BBExt || {};
 
 BBExt.ItemView = Backbone.View.extend({
 
+  _bbExt: 'ItemView',
+
   // Default viewData 
-  viewData: {},
+  // viewData: {},
 
   // Resources (initialized as entitites)
-  resources: {},
+  // resources: {},
 
   // Constructor for entities (initialized resources)
   // entities: {},
@@ -116,6 +118,10 @@ BBExt.ItemView = Backbone.View.extend({
   	_.each(this.resources, function(model_or_collection, name){
       this._bindEntity(name, model_or_collection);
   	}, this);
+
+    // bind model_or_collection as an entity (one model_or_collection for each view)
+    // if(name === 'model') this.model = this.entity[name];
+    // if(name === 'collection') this.collection = this.entity[name];    
   },
 
   _bindEntity: function(name, model_or_collection){
@@ -126,17 +132,16 @@ BBExt.ItemView = Backbone.View.extend({
       this._entities[name] = this.entity[name] = new model_or_collection();
     }
 
-    // bind model_or_collection as an entity (one model_or_collection for each view)
-    // if(name === 'model') this.model = this.entity[name];
-    // if(name === 'collection') this.collection = this.entity[name];
-
     return this;
   },
 
   _fetchEntitites: function(name, options){
-    var xhr = [];
+    this.trigger('entities:request', this);
     
+    var xhr = [];
     _.each(this.entity, function(){}, this);
+    
+    // this.trigger('entities:sync', this);
   },
 
   bindEntity: function(name, model_or_collection){
@@ -145,6 +150,11 @@ BBExt.ItemView = Backbone.View.extend({
 
   clearChildViews: function(){
     this._childViews = [];
+  },
+
+  getView: function(name){
+    var childView = _.findWhere(this._childViews, { name: name });
+    return (childView) ? childView.view : null;
   },
 
   // Bind view to _childViews
