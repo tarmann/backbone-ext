@@ -10,7 +10,9 @@
   * [getEntity](#getentity)
   * [bindEntity](#bindentity)
   * [close](#close)
-
+* [States](#states)
+* [Resources and Entities](#resources-and-entities)
+* [Child Views](#child-views)
 
 ## Events
 
@@ -34,27 +36,23 @@
 
 ## Close
 
+## States
+
 ## Resources and Entities
 
 ...
 
 ```js
-var app = BBExt.AppView.extend({
-
-  appRouter        : appRouter,
-
-  regions: {
-    'header'       : { el: '[data-region="header"]' },
-    'content'      : { el: '[data-region="content"]' }
-  },
+var Mail = BBExt.ItemView.extend({
 
   resources: {
-    'user'           : SD.Models.User,
-    'mails'          : SD.Collections.Mail,
-    'mailResponses'  : SD.Collections.Mail,
-    'mailFolders'    : SD.Collections.MailFolder
+    'user'         : UserModel,
+    'mails'        : MailCollection,
+    'folders'      : MailFolderCollection
   }
 
 });
 ```
+
+## Child Views
 
