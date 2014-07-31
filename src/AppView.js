@@ -2,13 +2,18 @@ var BBExt = BBExt || {};
 
 BBExt.AppView = BBExt.LayoutView.extend({
 
+  _bbEXT: 'AppView',
+
+  constructor: function(){
+    BBExt.LayoutView.apply(this, arguments);
+  },
+
   el: function(){
     return document.getElementsByTagName('body')[0];
   },
 
   initialize: function(options){
     this.options    = options || {};
-    this.entities   = this.options.entities || {};
     
     this._bindEntities();
     this._initializeLayoutView();

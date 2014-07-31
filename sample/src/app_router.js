@@ -29,19 +29,26 @@ SD.App.Router = BBExt.AppRouter.extend({
   },
 
   mailFilter: function(route, args){
-    this.appView.content.show( new SD.Views.Mails.LayoutView() );
-    
+    this.appView.content.show( new SD.Views.Mails.LayoutView());
+
     route.apply(this, args);
   },
 
   mails: function(query){
-    var region         = this.appView.content.view.main,
-        collection     = this.appView.entity.mails;
+    var mainRegion      = this.appView.content.view.main,
+        collection      = this.appView.entity.mails;
     
-    // show view
-    region.show( new SD.Views.Mails.CollectionView({
-      collection       : collection,
-      itemViewOptions  : { entities: this.appView.entities }
+    // show layoutview
+    // mainRegion.show( new SD.Views.Mails.LayoutView() );
+
+    // mainRegion.view.main.show( new SD.Views.Mails.CollectionView({
+    //   collection       : collection,
+    //   itemViewOptions  : { entities: this.appView.entities }
+    // }) );
+
+    mainRegion.show( new SD.Views.Mails.CollectionView({
+      collection : collection,
+      entities   : this.appView.entities
     }));
     
     // fetch entity

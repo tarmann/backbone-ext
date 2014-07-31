@@ -2,7 +2,12 @@ var BBExt = BBExt || {};
 
 BBExt.LayoutView = BBExt.ItemView.extend({
 
-  _bbExt: 'LayoutView',
+  _bbEXT: 'LayoutView',
+
+  constructor: function(){
+    this._regions = {};
+    BBExt.ItemView.apply(this, arguments);
+  },
 
   // regions constructor
   // regions: {},
@@ -14,16 +19,13 @@ BBExt.LayoutView = BBExt.ItemView.extend({
   // region: {},
 
   initialize: function(options){
-    this.options = options;
+    this.options = options || {};
     
-    this._bindEntities();
-
+    this._bindEntities(options);
     this._initializeLayoutView();
   },
 
   _initializeLayoutView: function(){
-    this.clearChildViews();
-    this.clearRegions();
     this._initializeRegions();
   },
 

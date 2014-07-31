@@ -2,35 +2,32 @@ var BBExt = BBExt || {};
 
 BBExt.ItemView = Backbone.View.extend({
 
-  _bbExt: 'ItemView',
+  _bbEXT: 'ItemView',
 
-  // Default viewData 
+  // viewData 
   // viewData: {},
 
-  // Resources (initialized as entitites)
+  // resources
   // resources: {},
 
-  // Constructor for entities (initialized resources)
+  // entities
   // entities: {},
 
-  // Store all nested entities (models, collections)
-  _entities: {},
-
-  // Store all nested entities (models, collections)
-  entity: {},
-
-  // Store all nested views 
-  // _childViews: [],
+  constructor: function(){
+    this.viewData = {};
+    this._childViews = [];
+    this.entity = {};
+    this._entities = {};
+    
+    Backbone.View.apply(this, arguments);
+  },
 
   // Placeholder method for when view is initialized.
   initialize: function(options){
     this.options = options || {};
-    this.entities = this.options.entities || {};
-    
-    this.clearChildViews();
-    
+
     this.beforeInitialize();
-    this._bindEntities();
+    this._bindEntities(options);
     this.onInitialize(options);
   },
 
@@ -44,18 +41,19 @@ BBExt.ItemView = Backbone.View.extend({
   // Includes the current model binded to the view, entities attached to the view
   // and custom data provided on options.
   getViewData: function(options){
-    var viewData = this._viewData || {};
+
+    var viewData = this.viewData || {};
     
     _.each(this._entities, function(model_or_collection, entity){
       viewData[entity] = model_or_collection.toJSON();
     }, this);
 
     if(this.model){
-      viewData = _.extend(viewData, this.model.toJSON());
+      viewData = _.extend({}, viewData, this.model.toJSON());
     }
 
     if(options){
-      viewData = _.extend(viewData, options);
+      viewData = _.extend({}, viewData, options);
     }
 
     return this.parseViewData(viewData);
@@ -114,7 +112,9 @@ BBExt.ItemView = Backbone.View.extend({
   },
 
   // bind entities from this.entities
-  _bindEntities: function(){
+  _bindEntities: function(options){
+    this.entities = this.options.entities || {};
+
   	_.each(this.resources, function(model_or_collection, name){
       this._bindEntity(name, model_or_collection);
   	}, this);
@@ -125,6 +125,7 @@ BBExt.ItemView = Backbone.View.extend({
   },
 
   _bindEntity: function(name, model_or_collection){
+    this.entities = this.options.entities || {};
 
     if( this.entities[name] ) {
       this._entities[name] = this.entity[name] = this.entities[name];

@@ -2,20 +2,16 @@ var BBExt = BBExt || {};
 
 BBExt.CollectionView = BBExt.ItemView.extend({
 
-  _bbExt: 'CollectionView',
+  _bbEXT: 'CollectionView',
 
   initialize: function(options){
     this.options = options || {};
     
     this.beforeInitialize(options);
-    
-    // this._bindChildViews();
+    this._bindEntities(options);
     this._bindEvents();
-    
     this.onInitialize(options);
   },
-
-  onInitialize: function(){},
 
   // TODO: wait for all entities required to load
   _bindEvents: function(){
@@ -33,7 +29,7 @@ BBExt.CollectionView = BBExt.ItemView.extend({
 
   _bindChildView: function(model){
     var ItemView  = this._getItemView(),
-        viewOptions = _.extend({}, { model: model }, this.options.itemViewOptions);
+        viewOptions = _.extend({}, { model: model }, this.getItemViewData());
 
     this.bindView( new ItemView(viewOptions) );
   },

@@ -107,6 +107,10 @@ SD.Views.Mails.ItemView = BBExt.ItemView.extend({
     '<%=customValue%>',
     '<hr /></div>'].join('') ),
 
+  onInitialize: function(){
+    console.log('hi');
+  },
+
   parseViewData: function(viewData){
     viewData.customValue = 'This is a custom value!';
     return viewData;
@@ -120,9 +124,11 @@ SD.Views.Mails.CollectionView = BBExt.CollectionView.extend({
 
   className: 'mail-list',
 
-  template: _.template(''),
-  
-  itemView: SD.Views.Mails.ItemView
+  itemView: SD.Views.Mails.ItemView,
+
+  getItemViewData: function(){
+    return { entities: this.entities };
+  }
 
 });
 
@@ -136,6 +142,10 @@ SD.Views.Mails.CollectionView = BBExt.CollectionView.extend({
 SD.Views.Mail = BBExt.ItemView.extend({
   
   model: new SD.Models.Mail(),
+
+  resources: {
+    'user' : SD.Models.User
+  },
 
   className: 'mail',
 
