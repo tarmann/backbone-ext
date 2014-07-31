@@ -2,12 +2,25 @@
 
 ## Documentation Index
 
+* [Events](#Events)
 * [Methods](#methods)
-  * [getViewData](#getViewData)
-  * [parseViewData](#parseViewData)
+  * [getViewData](#getviewdata)
+  * [parseViewData](#parseviewdata)
   * [render](#render)
-  * [getEntity](#getEntity)
-  * [bindEntity](#bindEntity)
+  * [getEntity](#getentity)
+  * [bindEntity](#bindentity)
+  * [close](#close)
+
+
+## Events
+
+* beforeInitialize
+* onInitialize
+* beforeRender
+* onRender
+* onClose
+
+## Methods
 
 ### getViewData
 
@@ -18,6 +31,8 @@
 ### getEntity
 
 ### bindEntity
+
+## Close
 
 ## Resources and Entities
 
