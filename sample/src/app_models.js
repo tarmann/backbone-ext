@@ -45,3 +45,19 @@ SD.Collections.Mail = Backbone.Collection.extend({
 SD.Collections.MailFolder = Backbone.Collection.extend({
   url: 'http://bbextemailapp.apiary-mock.com/mail/folders'
 });
+
+SD.Collections.Suppliers = Backbone.Collection.extend({
+  url: 'http://bbextemailapp.apiary-mock.com/suppliers'
+});
+
+SD.Collections.RfxSuppliers = Backbone.Collection.extend({
+  url: 'http://bbextemailapp.apiary-mock.com/rfx/suppliers'
+});
+
+SD.Collections.RfxResponses = Backbone.Collection.extend({
+  url: 'http://bbextemailapp.apiary-mock.com/rfx-suppliers-response'
+});
+
+SD.Collections.RfxDecision = Backbone.Collection.extend({
+  url: 'http://bbextemailapp.apiary-mock.com/rfx-suppliers-decision'
+});

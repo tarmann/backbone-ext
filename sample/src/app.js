@@ -36,6 +36,9 @@ SD.Views.Header = BBExt.ItemView.extend({
 
   template: _.template( ['<ul class="nav nav-tabs" role="tablist">',
     '<li class="active"><a href="#mail">Messages</a></li>',
+    '<li><a href="#suppliers/search">Suppliers</a></li>',
+    '<li><a href="#suppliers/responses">Responses</a></li>',
+    '<li><a href="#suppliers/decision">Decision</a></li>',
     '<li><a href="#settings">Settings</a></li>',
     '</ul>'].join('') )
 });
@@ -194,6 +197,47 @@ SD.Views.Mail = BBExt.ItemView.extend({
     }
 
     this.$el.append( this.getView('response').render().el );
+  }
+
+});
+
+
+/* 
+ * ========================================================================
+ * Rfx Suppliers
+ * ========================================================================
+ * 
+ */
+
+SD.Views.RfxSuppliers = {};
+
+SD.Views.RfxSuppliers.ItemView = BBExt.ItemView.extend({
+  
+  model: new SD.Models.Mail(),
+
+  resources: {
+    'supplier' : SD.Models.Supplier
+  },
+
+  className: 'mail',
+
+  template: _.template( ['<div>',
+    'Supplier',
+    '</div>'].join('') ),
+
+});
+
+
+SD.Views.RfxSuppliers.CollectionView = BBExt.CollectionView.extend({
+
+  className: 'rfx-supplier',
+
+  collection: new SD.Collections.Mail(),
+
+  itemView: SD.Views.RfxSuppliers.ItemView,
+
+  getItemViewData: function(){
+    return { entities: this.entities };
   }
 
 });

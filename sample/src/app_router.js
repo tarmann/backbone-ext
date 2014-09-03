@@ -20,7 +20,14 @@ SD.App.Router = BBExt.AppRouter.extend({
       ''                        : 'settings',
       '/personal'               : 'settingsPersonal',
       '/personal/password'      : 'settingsPersonalPassword'
-    }}
+    }},
+
+    // Settings Routers
+    { prefix: 'suppliers', filter: 'settingsFilter', routes: {
+      'search'                  : 'supplierSearch',
+      'responses'               : 'supplierResponses',
+      'decision'                : 'supplierDecision'
+    }}    
 
   ],
 
@@ -66,6 +73,18 @@ SD.App.Router = BBExt.AppRouter.extend({
 
   settings: function(){
     this.appView.content.show( new SD.Views.Settings.LayoutView() );
-  }
+  },
+
+  supplierSearch: function(){
+    this.appView.content.show( new SD.Views.RfxSuppliers.CollectionView() );
+  },
+
+  supplierResponses: function(){
+    this.appView.content.show( new SD.Views.RfxSuppliers.CollectionView() );
+  },
+
+  supplierDecision: function(){
+    this.appView.content.show( new SD.Views.RfxSuppliers.CollectionView() );
+  },  
 
 });

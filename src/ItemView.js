@@ -13,10 +13,13 @@ BBExt.ItemView = Backbone.View.extend({
   // entities
   // entities: {},
 
+
   constructor: function(){
     this.viewData = {};
-    this._childViews = [];
     this.entity = {};
+    this.entityEvents = {};
+    
+    this._childViews = [];
     this._entities = {};
     
     Backbone.View.apply(this, arguments);
@@ -28,6 +31,7 @@ BBExt.ItemView = Backbone.View.extend({
 
     this.beforeInitialize();
     this._bindEntities(options);
+    this._bindEntityEvents();
     this.onInitialize(options);
   },
 
@@ -124,6 +128,15 @@ BBExt.ItemView = Backbone.View.extend({
     // if(name === 'collection') this.collection = this.entity[name];    
   },
 
+  _bindEntityEvents: function(){
+    _.each(this.entityEvents, function(methodName, eventAndEntity){
+      var eventName = eventAndEntity.split(' ')[0],
+          entityName = eventAndEntity.split(' ')[1];
+
+      this.listenTo(this.entities[entityName], eventName, this[method]);
+    }, this);
+  },
+
   _bindEntity: function(name, model_or_collection){
     this.entities = this.options.entities || {};
 
@@ -153,7 +166,7 @@ BBExt.ItemView = Backbone.View.extend({
     this._childViews = [];
   },
 
-  getView: function(name){
+  getChildView: function(name){
     var childView = _.findWhere(this._childViews, { name: name });
     return (childView) ? childView.view : null;
   },
